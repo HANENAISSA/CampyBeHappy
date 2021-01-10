@@ -2,7 +2,9 @@ package com.example.campybehappy.Controller.Pages;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.WindowManager;
@@ -42,10 +44,24 @@ public class MainActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                    startActivity(new Intent(MainActivity.this, WelcomeActivity.class));
-                    finish();
+                rederacteTo();
+
 
             }
         }, Constants.SPLASH_SCREEN);
     }
+
+    private void rederacteTo() {
+
+        SharedPreferences sharedPreferences = getSharedPreferences(Constants.MY_PREFS, Context.MODE_PRIVATE);
+        Boolean is_connected = sharedPreferences.getBoolean(Constants.ISCONNECTED, false);
+        if (is_connected) {
+            startActivity(new Intent(MainActivity.this, LoginActivity.class));
+        } else {
+            startActivity(new Intent(MainActivity.this, WelcomeActivity.class));
+            finish();
+        }
+    }
+
+
 }

@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Patterns;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -13,13 +14,15 @@ import android.widget.TextView;
 import com.example.campybehappy.R;
 import com.google.android.material.textfield.TextInputEditText;
 
+import java.util.regex.Pattern;
+
 public class LoginActivity extends AppCompatActivity {
 
     Button callSignUp, btnValidLogin;
     ImageView logo_img;
     TextView logo_title, logo_subtitle;
     TextInputEditText usernameInput2, passwdInput2;
-
+    private static final Pattern PASSWORED_Pattern = Pattern.compile("^" + ".{4,}" +"$");
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,16 +42,55 @@ public class LoginActivity extends AppCompatActivity {
         callSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(LoginActivity.this,RegisterActivity.class);
-                startActivity(intent);
+               goToRegister();
             }
         });
         btnValidLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(LoginActivity.this,HomeActivity.class);
-                startActivity(intent);
+                if (validateEmail() && validatePassword()) {
+                    goToHome();
+                }
             }
         });
+    }
+
+    private void goToHome() {
+        Intent intent = new Intent(LoginActivity.this,HomeActivity.class);
+        startActivity(intent);
+    }
+
+    private void goToRegister() {
+        Intent intent = new Intent(LoginActivity.this,RegisterActivity.class);
+        startActivity(intent);
+    }
+    private boolean validateEmail() {
+        String emailInput = usernameInput2.getText().toString().trim();
+        if (emailInput.isEmpty()) {
+            usernameInput2.setError("Le champ ne peut pas être vide");
+            usernameInput2.requestFocus();
+            return false;
+        } else if (!Patterns.EMAIL_ADDRESS.matcher(emailInput).matches()) {
+            usernameInput2.setError("S'il vous plaît, mettez une adresse email valide");
+            usernameInput2.requestFocus();
+            return false;
+        } else {
+            usernameInput2.setError(null);
+            return true;
+        }
+    }
+
+    private boolean validatePassword() {
+        String passwordInput = passwdInput2.getText().toString().trim();
+        if (passwordInput.isEmpty()) {
+            passwdInput2.setError("Le champ ne peut pas être vide");
+            return false;
+        } else if (!PASSWORED_Pattern.matcher(passwordInput).matches()) {
+            passwdInput2.setError("S'il vous plaît, mettez une Mot de pass valide :/ ");
+            return false;
+        } else {
+            passwdInput2.setError(null);
+            return true;
+        }
     }
 }
