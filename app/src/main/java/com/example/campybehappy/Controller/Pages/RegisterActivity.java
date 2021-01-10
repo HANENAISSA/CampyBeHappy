@@ -3,19 +3,26 @@ package com.example.campybehappy.Controller.Pages;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Patterns;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 
+import com.example.campybehappy.Global.Constants;
 import com.example.campybehappy.R;
 import com.google.android.material.textfield.TextInputEditText;
+
+import java.util.regex.Pattern;
+
+import kotlin.reflect.KFunction;
 
 public class RegisterActivity extends AppCompatActivity {
 
     Button BtnGoLogin,BtnValidRegister;
     TextInputEditText fullnameInput, usernameInput, emailInput, passwdInput;
-
+    private static final Pattern PASSWORED_Pattern = Pattern.compile("^" + ".{4,}" +"$");
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,11 +49,97 @@ public class RegisterActivity extends AppCompatActivity {
         BtnValidRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //addUser();
-                Intent intent = new Intent(RegisterActivity.this,HomeActivity.class);
-                startActivity(intent);
+
+                if(validateInputs()) {
+
+                   if((register(usernameInput.getText().toString(),passwdInput.getText().toString())) && (register(emailInput.getText().toString(),passwdInput.getText().toString())))
+                   {
+                       redirectTO();
+                   }
+                }
             }
         });
 
     }
+
+    public boolean chekFullName(String fullname){
+        if (fullnameInput.getText().length() <3) {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
+    public boolean chekUserName(String UserName){
+        if (usernameInput.getText().length() <4) {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
+    public boolean chekEmail(String email){
+        if (email.isEmpty()) {
+            return false;
+        } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+    public boolean chekPasswored(String passwored){
+        if (passwored.isEmpty()) {
+            return false;
+        } else if (!PASSWORED_Pattern.matcher(passwored).matches()) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+    public boolean validateInputs() {
+        if (chekFullName(fullnameInput.getText().toString())) {
+            fullnameInput.setError(getString(R.string.chekFullName));
+            fullnameInput.requestFocus();
+            return false;
+        }
+        if (chekUserName(usernameInput.getText().toString())) {
+            usernameInput.setError(getString(R.string.chekUserName));
+            usernameInput.requestFocus();
+            return false;
+        }
+        if (chekEmail(emailInput.getText().toString())) {
+            emailInput.setError(getString(R.string.chekEmail));
+            emailInput.requestFocus();
+            return false;
+        }
+        if (chekPasswored(passwdInput.getText().toString())) {
+            passwdInput.setError(getString(R.string.chekPasswored));
+            passwdInput.requestFocus();
+            return false;
+        }
+
+        return true;
+    }
+    private boolean register(String email, String passwored) {
+        SharedPreferences preferences = getSharedPreferences(Constants.MY_PREFS,MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString(email,passwored);
+        if( editor.commit())
+        {
+           return true ;
+        }
+        else
+        {
+            return false;
+        }
+    }
+public void redirectTO()
+{
+    startActivity(new Intent(RegisterActivity.this, HomeActivity.class));
+    finish();
+
+}
+
 }

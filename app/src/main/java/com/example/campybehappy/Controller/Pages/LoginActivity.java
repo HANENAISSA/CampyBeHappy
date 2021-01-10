@@ -1,8 +1,10 @@
 package com.example.campybehappy.Controller.Pages;
-
 import androidx.appcompat.app.AppCompatActivity;
-
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.view.View;
@@ -10,7 +12,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-
+import com.example.campybehappy.Global.Constants;
 import com.example.campybehappy.R;
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -49,29 +51,34 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (validateEmail() && validatePassword()) {
-                    goToHome();
+                    loginUser();
                 }
             }
         });
     }
 
-    private void goToHome() {
-        Intent intent = new Intent(LoginActivity.this,HomeActivity.class);
-        startActivity(intent);
+    public boolean chekEmail(String mail){
+        if(Patterns.EMAIL_ADDRESS.matcher(mail).matches())
+        {
+            return true;
+        }
+        else return false;
     }
-
-    private void goToRegister() {
-        Intent intent = new Intent(LoginActivity.this,RegisterActivity.class);
-        startActivity(intent);
+    public boolean chekpasswoored(String passwored){
+        if(PASSWORED_Pattern.matcher(passwored).matches())
+        {
+            return true;
+        }
+        else return false;
     }
-    private boolean validateEmail() {
+    public boolean validateEmail() {
         String emailInput = usernameInput2.getText().toString().trim();
         if (emailInput.isEmpty()) {
-            usernameInput2.setError("Le champ ne peut pas être vide");
+            usernameInput2.setError(getString(R.string.errorpassw));
             usernameInput2.requestFocus();
             return false;
-        } else if (!Patterns.EMAIL_ADDRESS.matcher(emailInput).matches()) {
-            usernameInput2.setError("S'il vous plaît, mettez une adresse email valide");
+        } else if (chekEmail(emailInput)==false) {
+            usernameInput2.setError(getString(R.string.erreremail));
             usernameInput2.requestFocus();
             return false;
         } else {
@@ -79,18 +86,65 @@ public class LoginActivity extends AppCompatActivity {
             return true;
         }
     }
-
-    private boolean validatePassword() {
+    public boolean validatePassword(){
         String passwordInput = passwdInput2.getText().toString().trim();
         if (passwordInput.isEmpty()) {
-            passwdInput2.setError("Le champ ne peut pas être vide");
-            return false;
-        } else if (!PASSWORED_Pattern.matcher(passwordInput).matches()) {
-            passwdInput2.setError("S'il vous plaît, mettez une Mot de pass valide :/ ");
+            passwdInput2.setError(getString(R.string.errorpassw));
+
+            return false;//Le champ ne peut pas être vide
+        } else if (chekpasswoored(passwordInput)) {
+            passwdInput2.setError(getString(R.string.errorpass2));
             return false;
         } else {
             passwdInput2.setError(null);
             return true;
+        }
+    }
+    private void goToRegister() {
+        Intent intent = new Intent(LoginActivity.this,RegisterActivity.class);
+        startActivity(intent);
+    }
+    public boolean existeEmail(String email) {
+        SharedPreferences preferences = getSharedPreferences(Constants.MY_PREFS, MODE_PRIVATE);
+        if(preferences.contains(email)){
+            return  true;
+        }
+        else
+        {
+            return  false ;
+        }
+    }
+    public boolean existePasswored(String passwored,String email) {   String passw="";
+        SharedPreferences preferences = getSharedPreferences(Constants.MY_PREFS, MODE_PRIVATE);
+        passw =preferences.getString(email, "notfound");
+        return passw.equals(passwored);
+    }
+    public void loginUser() {
+        String Adres = usernameInput2.getText().toString();
+        String pass = passwdInput2.getText().toString();
+        if(existeEmail(Adres))
+        {
+            if(existePasswored(pass,Adres)){
+                SharedPreferences sharedPreferences = getSharedPreferences(Constants.MY_PREFS, Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putBoolean(Constants.ISCONNECTED, true);
+                editor.apply();
+                Intent intent = new Intent(LoginActivity.this,HomeActivity.class);
+                startActivity(intent);
+            }
+        }
+        else
+        {
+            AlertDialog alertDialog = new AlertDialog.Builder(LoginActivity.this).create();
+            alertDialog.setTitle(":/ Erreur !!!!");
+            alertDialog.setMessage("Mot Passe Or/Et Email incorrect");
+            alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+            alertDialog.show();
         }
     }
 }

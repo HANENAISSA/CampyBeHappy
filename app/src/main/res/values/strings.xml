@@ -56,4 +56,11 @@
     <string name="textSafety">Safety</string>
     <string name="my_favorite_camps">My Favorite Camps</string>
     <string name="my_camps_history">My Camps History</string>
+    <string name="chekFullName">Please enter a correct value!</string>
+    <string name="chekUserName">Length UserName Minimum 5 Character !</string>
+    <string name="chekEmail">Please enter a correct value!</string>
+    <string name="chekPasswored">Please enter a correct value!</string>
+    <string name="errorpassw">The field cannot be empty</string>
+    <string name="errorpass2">Please enter a valid Password :/</string>
+    <string name="erreremail">Please enter a valid email address !</string>
 </resources>
