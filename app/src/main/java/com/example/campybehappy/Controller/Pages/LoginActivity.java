@@ -57,12 +57,18 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    public boolean chekEmail(String mail){
-        if(Patterns.EMAIL_ADDRESS.matcher(mail).matches())
-        {
-            return true;
-        }
-        else return false;
+    public boolean chekEmail(String email){
+        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\."+
+                "[a-zA-Z0-9_+&*-]+)*@" +
+                "(?:[a-zA-Z0-9-]+\\.)+[a-z" +
+                "A-Z]{2,7}$";
+
+        Pattern pat = Pattern.compile(emailRegex);
+        if (email == null)
+            return false;
+        return pat.matcher(email).matches();
+
+    //return Patterns.EMAIL_ADDRESS.matcher(mail).matches();
     }
     public boolean chekpasswoored(String passwored){
         if(PASSWORED_Pattern.matcher(passwored).matches())
@@ -77,7 +83,7 @@ public class LoginActivity extends AppCompatActivity {
             usernameInput2.setError(getString(R.string.errorpassw));
             usernameInput2.requestFocus();
             return false;
-        } else if (chekEmail(emailInput)==false) {
+        } else if (!chekEmail(emailInput)) {
             usernameInput2.setError(getString(R.string.erreremail));
             usernameInput2.requestFocus();
             return false;

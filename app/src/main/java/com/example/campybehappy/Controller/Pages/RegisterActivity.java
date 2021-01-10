@@ -63,7 +63,7 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     public boolean chekFullName(String fullname){
-        if (fullnameInput.getText().length() <3) {
+        if (fullname.length() <3 || fullname.isEmpty() || fullname==null ) {
             return false;
         }
         else
@@ -72,7 +72,7 @@ public class RegisterActivity extends AppCompatActivity {
         }
     }
     public boolean chekUserName(String UserName){
-        if (usernameInput.getText().length() <4) {
+        if (UserName.length() <4 || UserName.isEmpty()) {
             return false;
         }
         else
@@ -81,13 +81,15 @@ public class RegisterActivity extends AppCompatActivity {
         }
     }
     public boolean chekEmail(String email){
-        if (email.isEmpty()) {
+        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\."+
+                "[a-zA-Z0-9_+&*-]+)*@" +
+                "(?:[a-zA-Z0-9-]+\\.)+[a-z" +
+                "A-Z]{2,7}$";
+
+        Pattern pat = Pattern.compile(emailRegex);
+        if (email == null)
             return false;
-        } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            return false;
-        } else {
-            return true;
-        }
+        return pat.matcher(email).matches();
     }
     public boolean chekPasswored(String passwored){
         if (passwored.isEmpty()) {
