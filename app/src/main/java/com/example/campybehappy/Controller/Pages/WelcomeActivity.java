@@ -50,7 +50,7 @@ public class WelcomeActivity extends AppCompatActivity {
                     return tab3;
             }
             return null;
-        }
+         }
 
         @Override
         public int getCount() {
