@@ -42,8 +42,5 @@ public class ExampleUnitTest {
     public void validRegisterPasswored() {
         assertEquals(true, registerActivity.chekPasswored("0540"));
     }
-   /* @Test
-    public void test() {
-        assertEquals(true, loginActivity.existePasswored("0000","jbeli@gmail.com"));
-    }*/
+
 }

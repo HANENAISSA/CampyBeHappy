@@ -56,9 +56,9 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences(Constants.MY_PREFS, Context.MODE_PRIVATE);
         Boolean is_connected = sharedPreferences.getBoolean(Constants.ISCONNECTED, false);
         if (is_connected) {
-            startActivity(new Intent(MainActivity.this, LoginActivity.class));
+            startActivity(new Intent(MainActivity.this, HomeActivity.class));
         } else {
-            startActivity(new Intent(MainActivity.this, WelcomeActivity.class));
+            startActivity(new Intent(MainActivity.this, LoginActivity.class));
             finish();
         }
     }
