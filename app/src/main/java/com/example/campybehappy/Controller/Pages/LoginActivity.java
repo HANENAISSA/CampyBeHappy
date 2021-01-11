@@ -13,9 +13,11 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.example.campybehappy.Global.Constants;
+import com.example.campybehappy.Model.User;
 import com.example.campybehappy.R;
 import com.google.android.material.textfield.TextInputEditText;
 
+import java.util.ArrayList;
 import java.util.regex.Pattern;
 
 public class LoginActivity extends AppCompatActivity {
@@ -130,6 +132,8 @@ public class LoginActivity extends AppCompatActivity {
     public void loginUser() {
         String Adres = usernameInput2.getText().toString();
         String pass = passwdInput2.getText().toString();
+        User user1= new User("jbeli","jbeli","Jbeli@gmail.com","14265401");
+        create(user1);
         if(existeEmail(Adres)== true)
         {
             if(existePasswored(pass,Adres) == true){
@@ -167,5 +171,11 @@ public class LoginActivity extends AppCompatActivity {
                     });
             alertDialog.show();
         }
+    }
+
+    public void create(User user)
+    {
+        ArrayList<User> userarray = new ArrayList<User>();
+        userarray.add(user);
     }
 }
