@@ -50,7 +50,8 @@ public class LoginActivity extends AppCompatActivity {
         btnValidLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (validateEmail() && validatePassword()) {
+                if (validateEmail()== true && validatePassword()== true) {
+
                     loginUser();
                 }
             }
@@ -83,7 +84,7 @@ public class LoginActivity extends AppCompatActivity {
             usernameInput2.setError(getString(R.string.errorpassw));
             usernameInput2.requestFocus();
             return false;
-        } else if (!chekEmail(emailInput)) {
+        } else if (chekEmail(emailInput)== false) {
             usernameInput2.setError(getString(R.string.erreremail));
             usernameInput2.requestFocus();
             return false;
@@ -98,7 +99,7 @@ public class LoginActivity extends AppCompatActivity {
             passwdInput2.setError(getString(R.string.errorpassw));
 
             return false;//Le champ ne peut pas être vide
-        } else if (chekpasswoored(passwordInput)) {
+        } else if (chekpasswoored(passwordInput)==false) {
             passwdInput2.setError(getString(R.string.errorpass2));
             return false;
         } else {
@@ -112,7 +113,7 @@ public class LoginActivity extends AppCompatActivity {
     }
     public boolean existeEmail(String email) {
         SharedPreferences preferences = getSharedPreferences(Constants.MY_PREFS, MODE_PRIVATE);
-        if(preferences.contains(email)){
+        if(preferences.contains(email) || email != null){
             return  true;
         }
         else
@@ -120,7 +121,8 @@ public class LoginActivity extends AppCompatActivity {
             return  false ;
         }
     }
-    public boolean existePasswored(String passwored,String email) {   String passw="";
+    public boolean existePasswored(String passwored,String email) {
+        String passw="";
         SharedPreferences preferences = getSharedPreferences(Constants.MY_PREFS, MODE_PRIVATE);
         passw =preferences.getString(email, "notfound");
         return passw.equals(passwored);
@@ -128,9 +130,9 @@ public class LoginActivity extends AppCompatActivity {
     public void loginUser() {
         String Adres = usernameInput2.getText().toString();
         String pass = passwdInput2.getText().toString();
-        if(existeEmail(Adres))
+        if(existeEmail(Adres)== true)
         {
-            if(existePasswored(pass,Adres)){
+            if(existePasswored(pass,Adres) == true){
                 SharedPreferences sharedPreferences = getSharedPreferences(Constants.MY_PREFS, Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.putBoolean(Constants.ISCONNECTED, true);

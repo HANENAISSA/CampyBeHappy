@@ -101,22 +101,22 @@ public class RegisterActivity extends AppCompatActivity {
         }
     }
     public boolean validateInputs() {
-        if (chekFullName(fullnameInput.getText().toString())) {
+        if (chekFullName(fullnameInput.getText().toString())== false) {
             fullnameInput.setError(getString(R.string.chekFullName));
             fullnameInput.requestFocus();
             return false;
         }
-        if (chekUserName(usernameInput.getText().toString())) {
+        if (chekUserName(usernameInput.getText().toString())== false) {
             usernameInput.setError(getString(R.string.chekUserName));
             usernameInput.requestFocus();
             return false;
         }
-        if (chekEmail(emailInput.getText().toString())) {
+        if (chekEmail(emailInput.getText().toString())== false) {
             emailInput.setError(getString(R.string.chekEmail));
             emailInput.requestFocus();
             return false;
         }
-        if (chekPasswored(passwdInput.getText().toString())) {
+        if (chekPasswored(passwdInput.getText().toString())== false) {
             passwdInput.setError(getString(R.string.chekPasswored));
             passwdInput.requestFocus();
             return false;

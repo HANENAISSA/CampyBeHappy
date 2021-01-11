@@ -32,7 +32,7 @@ public class ExampleUnitTest {
     }
     @Test
     public void valideFullName() {
-        assertEquals(true, registerActivity.chekFullName("ffff"));
+        assertEquals(true, registerActivity.chekFullName("testpass"));
     }
     @Test
     public void valideRegisterEmail() {
@@ -42,4 +42,8 @@ public class ExampleUnitTest {
     public void validRegisterPasswored() {
         assertEquals(true, registerActivity.chekPasswored("00"));
     }
+   /* @Test
+    public void test() {
+        assertEquals(true, loginActivity.existePasswored("0000","jbeli@gmail.com"));
+    }*/
 }
