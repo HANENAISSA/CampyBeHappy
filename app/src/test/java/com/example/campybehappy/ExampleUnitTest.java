@@ -40,7 +40,7 @@ public class ExampleUnitTest {
     }
     @Test
     public void validRegisterPasswored() {
-        assertEquals(true, registerActivity.chekPasswored("00"));
+        assertEquals(true, registerActivity.chekPasswored("0000"));
     }
 
 }
